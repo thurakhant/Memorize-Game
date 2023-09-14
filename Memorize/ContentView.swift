@@ -8,21 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis : [String] = ["🎃","☠️","🤡","👻"]
+    let emojis : [String] = ["🎃","☠️","🤡","👻","😈","👽","🤖","👁️","👶","🦷","👹","👨‍💻"]
+    @State var cardCount : Int = 2
     var body: some View {
-        HStack(content: {
-            ForEach(emojis.indices , id: \.self){ index in
-                CardView(content: emojis[index])
-            }
-        }).padding()
-            .foregroundColor(.orange)
-        
+        VStack{
+            cards
+            cardCountAdjuster
+        }
+        .padding()
     }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    
+    func cardCountAdjusterFun (by offset: Int , symbol: String) -> some View{
+        Button(action: {
+                cardCount += offset
+        }, label: {
+            Image(systemName:symbol)
+        }).disabled(cardCount + offset < 1 || cardCount + offset > emojis.count)
+    }
+    
+    var cards : some View {
+        HStack{
+            ForEach(0..<cardCount , id : \.self){ index in
+                CardView(content: emojis[index])
+            }.foregroundColor(.orange)
+        }
+    }
+    
+    var cardRemover : some View {
+        cardCountAdjusterFun(by: -1, symbol: "minus")
+    }
+    
+    var cardAdder : some View {
+        cardCountAdjusterFun(by: +1, symbol: "plus")
+    }
+    
+    var cardCountAdjuster : some View{
+        HStack{
+            cardRemover
+            Spacer()
+            cardAdder
+        }
     }
 }
 
@@ -48,8 +73,20 @@ struct CardView: View{
         
     }
 }
-/// [Summary Note]
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+
+/// [
+/// Summary Note
+/// ]
 ///
 /// Views are immutable
 /// @State creating a pointer to a little pieces of memory where it keep that(@State)
-/// Pointer never change itself
+/// Pointer can't change itself
+///
