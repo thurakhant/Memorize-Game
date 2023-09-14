@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    let emojis : [String] = ["🎃","☠️","🤡","👻"]
     var body: some View {
         HStack(content: {
-            CardView(isFacedUp: true)
-            CardView(isFacedUp: true)
-            CardView(isFacedUp: true)
-            CardView(isFacedUp: true)
+            ForEach(emojis.indices , id: \.self){ index in
+                CardView(content: emojis[index])
+            }
         }).padding()
             .foregroundColor(.orange)
         
@@ -27,7 +27,8 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct CardView: View{
-   @State var isFacedUp = false
+    let content: String
+    @State var isFacedUp = true
     
     var body: some View {
         
@@ -36,7 +37,7 @@ struct CardView: View{
             if isFacedUp {
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text("🤌").font(.largeTitle)
+                Text(content).font(.largeTitle)
             }else{
                 base.fill()
             }
@@ -48,7 +49,7 @@ struct CardView: View{
     }
 }
 /// [Summary Note]
-/// 
+///
 /// Views are immutable
 /// @State creating a pointer to a little pieces of memory where it keep that(@State)
 /// Pointer never change itself
