@@ -11,12 +11,11 @@ struct ContentView: View {
     var body: some View {
         HStack(content: {
             CardView(isFacedUp: true)
-            CardView()
-            CardView()
-            CardView()
-        })
-        .foregroundColor(.orange)
-        .padding()
+            CardView(isFacedUp: true)
+            CardView(isFacedUp: true)
+            CardView(isFacedUp: true)
+        }).padding()
+            .foregroundColor(.orange)
         
     }
 }
@@ -28,21 +27,28 @@ struct ContentView_Previews: PreviewProvider {
 }
 
 struct CardView: View{
-    var isFacedUp: Bool = false
+   @State var isFacedUp = false
     
     var body: some View {
-        ZStack (content : {
+        
+        ZStack {
+            let base = RoundedRectangle(cornerRadius: 12)
             if isFacedUp {
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2).foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2)
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
                 Text("🤌").font(.largeTitle)
             }else{
-                RoundedRectangle(cornerRadius: 12)
+                base.fill()
             }
             
-        })
+        }.onTapGesture {
+            isFacedUp.toggle()
+        }
         
     }
 }
+/// [Summary Note]
+/// 
+/// Views are immutable
+/// @State creating a pointer to a little pieces of memory where it keep that(@State)
+/// Pointer never change itself
